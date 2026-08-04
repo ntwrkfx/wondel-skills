@@ -2,6 +2,10 @@
   "name": "code-craftsmanship",
   "version": "1.5.1",
   "description": "Code quality and software design skills including Clean Code (Robert C. Martin), Refactoring patterns (Martin Fowler), A Philosophy of Software Design (John Ousterhout), The Pragmatic Programmer (Hunt & Thomas), Domain-Driven Design (Eric Evans), and Working Effectively with Legacy Code (Michael Feathers)",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "clean-code",
@@ -20,7 +24,22 @@
     "over-engineered",
     "untested-code"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Code Craftsmanship",
+    "shortDescription": "Refactoring, maintainability, domain design, testing, and legacy code",
+    "longDescription": "Apply established software craftsmanship frameworks to clean code, refactoring, modular design, domain modeling, pragmatic engineering, and safe legacy-code change.",
+    "developerName": "Wondel.ai",
+    "category": "Productivity",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use code craftsmanship to help with this task."
+    ]
+  }
 }
