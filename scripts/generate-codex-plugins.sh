@@ -3,8 +3,11 @@
 # generate-codex-plugins.sh — mirror the Claude plugin marketplace into the
 # OpenAI plugin standard shared by ChatGPT and Codex.
 #
-# SINGLE SOURCE OF TRUTH: .claude-plugin/marketplace.json (collections, skill
-# membership, versions, metadata). This script regenerates, from it:
+# SINGLE SOURCE OF TRUTH:
+#   .claude-plugin/marketplace.json   collection membership and versions
+#   config/openai-plugin-metadata.json ChatGPT/Codex listing presentation
+#
+# This script regenerates:
 #
 #   plugins/<collection>/.codex-plugin/plugin.json   # OpenAI plugin manifest
 #   plugins/<collection>/skills/<skill>              # symlinks -> repo-root skills
@@ -24,6 +27,7 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
 SRC=".claude-plugin/marketplace.json"
+OPENAI_META="config/openai-plugin-metadata.json"
 PLUGINS_DIR="plugins"
 MP_DIR=".agents/plugins"
 MP="$MP_DIR/marketplace.json"
@@ -38,7 +42,10 @@ METASKILLS=(
 )
 
 [[ -f "$SRC" ]] || { echo "Error: $SRC not found (run from the skills repo root)" >&2; exit 1; }
+[[ -f "$OPENAI_META" ]] || { echo "Error: $OPENAI_META not found" >&2; exit 1; }
 command -v jq >/dev/null || { echo "Error: jq is required" >&2; exit 1; }
+jq -e . "$SRC" >/dev/null || { echo "Error: invalid JSON: $SRC" >&2; exit 1; }
+jq -e . "$OPENAI_META" >/dev/null || { echo "Error: invalid JSON: $OPENAI_META" >&2; exit 1; }
 
 # ChatGPT-compatible guided journeys must explicitly define their no-workspace
 # behavior. Fail generation rather than publishing a journey that can claim
@@ -74,7 +81,7 @@ jq '{
   } ]
 }' "$SRC" > "$MP"
 
-# 2) One OpenAI plugin per collection: rich manifest + skill symlinks.
+# 2) One OpenAI plugin per collection: curated manifest + skill symlinks.
 count="$(jq '.plugins | length' "$SRC")"
 total_links=0
 for i in $(seq 0 $((count - 1))); do
@@ -82,35 +89,51 @@ for i in $(seq 0 $((count - 1))); do
   pdir="$PLUGINS_DIR/$name"
   mkdir -p "$pdir/.codex-plugin" "$pdir/skills"
 
+  jq -e --arg name "$name" '
+    .[$name]
+    and .[$name].displayName
+    and .[$name].shortDescription
+    and .[$name].longDescription
+    and .[$name].category
+    and .[$name].defaultPrompt
+  ' "$OPENAI_META" >/dev/null || {
+    echo "Error: incomplete OpenAI listing metadata for plugin $name" >&2
+    exit 1
+  }
+
   jq \
+    --argjson index "$i" \
     --arg repository "$PUBLIC_REPOSITORY" \
     --arg homepage "$PUBLIC_HOMEPAGE" \
-    ".plugins[$i] | {
-      name,
-      version,
-      description,
-      author: {
-        name: (.author.name // \"Wondel.ai\"),
-        url: (.author.url // \$homepage)
-      },
-      license,
-      keywords,
-      repository: \$repository,
-      homepage: \$homepage,
-      skills: \"./skills/\",
-      interface: {
-        displayName: (.name | split(\"-\") | map((.[0:1] | ascii_upcase) + .[1:]) | join(\" \")),
-        shortDescription: ((.description // \"\") | if length > 100 then .[0:97] + \"...\" else . end),
-        longDescription: .description,
-        developerName: (.author.name // \"Wondel.ai\"),
-        category: (if .category == \"design\" then \"Design\" else \"Productivity\" end),
-        capabilities: [\"Structured analysis\", \"Guided workflows\"],
-        websiteURL: \$homepage,
-        defaultPrompt: [
-          (\"Use \" + (.name | split(\"-\") | join(\" \")) + \" to help with this task.\")
-        ]
-      }
-    } | with_entries(select(.value != null))" "$SRC" > "$pdir/.codex-plugin/plugin.json"
+    --slurpfile openai "$OPENAI_META" '
+      .plugins[$index] as $plugin
+      | ($openai[0][$plugin.name] // {}) as $meta
+      | {
+          name: $plugin.name,
+          version: $plugin.version,
+          description: $plugin.description,
+          author: {
+            name: ($plugin.author.name // "Wondel.ai"),
+            url: ($plugin.author.url // $homepage)
+          },
+          license: $plugin.license,
+          keywords: $plugin.keywords,
+          repository: $repository,
+          homepage: $homepage,
+          skills: "./skills/",
+          interface: {
+            displayName: $meta.displayName,
+            shortDescription: $meta.shortDescription,
+            longDescription: $meta.longDescription,
+            developerName: ($plugin.author.name // "Wondel.ai"),
+            category: $meta.category,
+            capabilities: ["Structured analysis", "Guided workflows"],
+            websiteURL: $homepage,
+            defaultPrompt: [$meta.defaultPrompt]
+          }
+        }
+      | with_entries(select(.value != null))
+    ' "$SRC" > "$pdir/.codex-plugin/plugin.json"
 
   # Symlink each member skill to its repo-root directory. OpenAI metadata in
   # <skill>/agents/openai.yaml remains visible through the link.
