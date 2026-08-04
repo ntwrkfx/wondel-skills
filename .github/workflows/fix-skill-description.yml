@@ -1,0 +1,78 @@
+name: Apply SKILL description fix
+
+on:
+  push:
+    branches:
+      - feat/chatgpt-compatibility
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/chatgpt-compatibility
+
+      - name: Shorten invalid description and harden validation
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          skill_path = Path("design-code-architecture/SKILL.md")
+          skill = skill_path.read_text(encoding="utf-8")
+          description = (
+              "Guided journey for designing a new app architecture: boundaries, domain model, "
+              "data choices, resilience, and scope. Orchestrates clean-architecture, "
+              "domain-driven-design, system-design, ddia-systems, software-design-philosophy, "
+              "release-it, pragmatic-programmer, and 37signals-way. Use when the user wants to "
+              "structure a new app, choose a modular monolith versus services, define bounded "
+              "contexts, select storage and consistency models, or design reliability before "
+              "implementation. Records decisions in ARCHITECTURE.md, RELIABILITY.md, "
+              "TECH-DEBT.md, TESTING.md, and DESIGN-CODE-ARCHITECTURE-PLAN.md so the journey can "
+              "resume across sessions. For an existing codebase, use remove-technical-debt or "
+              "improve-code-quality; for an unvalidated idea, use create-business or create-app. "
+              "Invoke an individual framework skill for a narrow question."
+          )
+          assert 1 <= len(description) <= 1024, len(description)
+          replacement = "description: '" + description.replace("'", "''") + "'"
+          skill, count = re.subn(r"^description:.*$", replacement, skill, count=1, flags=re.MULTILINE)
+          if count != 1:
+              raise SystemExit("could not replace design-code-architecture description")
+          skill_path.write_text(skill, encoding="utf-8")
+
+          validator_path = Path("scripts/validate-openai-compat.py")
+          validator = validator_path.read_text(encoding="utf-8")
+          old = '''        if not description:\n            fail(f"{slug}/SKILL.md lacks frontmatter description")\n        if name in frontmatter_names:\n'''
+          new = '''        if not description:\n            fail(f"{slug}/SKILL.md lacks frontmatter description")\n        if not 1 <= len(description) <= 1024:\n            fail(\n                f"{slug}/SKILL.md frontmatter description must be 1-1024 characters; "\n                f"got {len(description)}"\n            )\n        if name in frontmatter_names:\n'''
+          if old not in validator:
+              if "frontmatter description must be 1-1024 characters" not in validator:
+                  raise SystemExit("could not locate validator insertion point")
+          else:
+              validator = validator.replace(old, new, 1)
+              validator_path.write_text(validator, encoding="utf-8")
+          PY
+
+      - name: Verify compatibility
+        run: |
+          ./scripts/generate-codex-plugins.sh
+          python3 ./scripts/validate-openai-compat.py
+          git diff --exit-code -- .agents/plugins plugins
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No changes required"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add design-code-architecture/SKILL.md scripts/validate-openai-compat.py
+          git commit -m "fix: enforce OpenAI skill description length"
+          git push origin HEAD:feat/chatgpt-compatibility
