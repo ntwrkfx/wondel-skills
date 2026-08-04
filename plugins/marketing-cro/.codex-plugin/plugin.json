@@ -2,6 +2,10 @@
   "name": "marketing-cro",
   "version": "1.5.1",
   "description": "Marketing and conversion optimization skills including CRO methodology, StoryBrand messaging, Scorecard Marketing lead generation, viral marketing (Contagious), and 1-Page Marketing Plan",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "marketing",
@@ -17,7 +21,22 @@
     "go-viral",
     "homepage-copy"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing CRO",
+    "shortDescription": "Messaging, lead generation, conversion optimization, and viral growth",
+    "longDescription": "Apply structured marketing and conversion frameworks to positioning copy, landing pages, lead generation, experimentation, and word-of-mouth growth.",
+    "developerName": "Wondel.ai",
+    "category": "Productivity",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use marketing CRO to help with this task."
+    ]
+  }
 }

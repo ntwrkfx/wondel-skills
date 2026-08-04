@@ -2,6 +2,10 @@
   "name": "systems-architecture",
   "version": "1.5.1",
   "description": "Systems architecture and distributed systems skills including Designing Data-Intensive Applications (Martin Kleppmann), System Design Interview (Alex Xu), Clean Architecture (Robert C. Martin), Release It! (Michael Nygard), High Performance Browser Networking (Ilya Grigorik), and Team Topologies (Skelton & Pais)",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "system-design",
@@ -21,7 +25,22 @@
     "core-web-vitals",
     "sql-or-nosql"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Systems Architecture",
+    "shortDescription": "Distributed systems, resilience, performance, boundaries, and team topology",
+    "longDescription": "Apply systems architecture frameworks to distributed data, scalability, resilience, performance, clean boundaries, browser networking, and organization design.",
+    "developerName": "Wondel.ai",
+    "category": "Productivity",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use systems architecture to help with this task."
+    ]
+  }
 }

@@ -1,0 +1,72 @@
+{
+  "product-strategy": {
+    "displayName": "Product Strategy",
+    "shortDescription": "Customer discovery, positioning, pricing, negotiation, and product metrics",
+    "longDescription": "Apply structured product strategy frameworks to customer discovery, product design, negotiation, willingness-to-pay pricing, and startup metrics.",
+    "category": "Productivity",
+    "defaultPrompt": "Use product strategy to help with this task."
+  },
+  "ux-design": {
+    "displayName": "UX Design",
+    "shortDescription": "UX audits, interface design, typography, retention, and interaction quality",
+    "longDescription": "Apply established UX and interface design frameworks to usability, visual hierarchy, typography, behavior design, retention, microinteractions, and design reviews.",
+    "category": "Design",
+    "defaultPrompt": "Use UX design to help with this task."
+  },
+  "marketing-cro": {
+    "displayName": "Marketing CRO",
+    "shortDescription": "Messaging, lead generation, conversion optimization, and viral growth",
+    "longDescription": "Apply structured marketing and conversion frameworks to positioning copy, landing pages, lead generation, experimentation, and word-of-mouth growth.",
+    "category": "Productivity",
+    "defaultPrompt": "Use marketing CRO to help with this task."
+  },
+  "sales-influence": {
+    "displayName": "Sales Influence",
+    "shortDescription": "Offers, outbound sales, persuasive messaging, and objection handling",
+    "longDescription": "Apply structured sales and influence frameworks to offer design, outbound systems, persuasive communication, sticky messaging, and objection handling.",
+    "category": "Productivity",
+    "defaultPrompt": "Use sales influence to help with this task."
+  },
+  "product-innovation": {
+    "displayName": "Product Innovation",
+    "shortDescription": "Validation, MVP design, prototyping, and continuous discovery",
+    "longDescription": "Apply product innovation frameworks to validate assumptions, design experiments, prototype critical flows, and organize continuous product discovery.",
+    "category": "Productivity",
+    "defaultPrompt": "Use product innovation to help with this task."
+  },
+  "strategy-growth": {
+    "displayName": "Strategy Growth",
+    "shortDescription": "Positioning, go-to-market, operating systems, and network effects",
+    "longDescription": "Apply business strategy and growth frameworks to positioning, market entry, value innovation, execution systems, strategic diagnosis, and network effects.",
+    "category": "Productivity",
+    "defaultPrompt": "Use strategy growth to help with this task."
+  },
+  "team-motivation": {
+    "displayName": "Team Motivation",
+    "shortDescription": "Management leverage, one-on-ones, motivation, delegation, and OKRs",
+    "longDescription": "Apply practical management frameworks to team motivation, autonomy, mastery, purpose, managerial leverage, one-on-ones, delegation, and task-relevant maturity.",
+    "category": "Productivity",
+    "defaultPrompt": "Use team motivation to help with this task."
+  },
+  "code-craftsmanship": {
+    "displayName": "Code Craftsmanship",
+    "shortDescription": "Refactoring, maintainability, domain design, testing, and legacy code",
+    "longDescription": "Apply established software craftsmanship frameworks to clean code, refactoring, modular design, domain modeling, pragmatic engineering, and safe legacy-code change.",
+    "category": "Productivity",
+    "defaultPrompt": "Use code craftsmanship to help with this task."
+  },
+  "systems-architecture": {
+    "displayName": "Systems Architecture",
+    "shortDescription": "Distributed systems, resilience, performance, boundaries, and team topology",
+    "longDescription": "Apply systems architecture frameworks to distributed data, scalability, resilience, performance, clean boundaries, browser networking, and organization design.",
+    "category": "Productivity",
+    "defaultPrompt": "Use systems architecture to help with this task."
+  },
+  "metaskills": {
+    "displayName": "Guided Journeys",
+    "shortDescription": "Create, improve, or grow products and businesses through staged decisions",
+    "longDescription": "Run twelve guided journeys that sequence the appropriate Wondel skills, surface each decision, preserve journey state, and produce structured project artifacts in workspace or chat mode.",
+    "category": "Productivity",
+    "defaultPrompt": "Use a guided journey to help with this task."
+  }
+}
