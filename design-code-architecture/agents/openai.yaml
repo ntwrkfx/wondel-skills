@@ -1,0 +1,14 @@
+interface:
+  display_name: "Design Code Architecture"
+  short_description: "Design clear, evolvable code architecture"
+  default_prompt: >-
+    Run this guided journey. If no writable workspace is available, use chat mode:
+    maintain structured journey state in the conversation, present complete Markdown
+    artifacts for approval, and never claim files were written. If a writable workspace
+    is available, use the documented docs/ artifacts and resume tracker.
+
+policy:
+  products:
+    - CHAT
+    - CODEX
+  allow_implicit_invocation: false
