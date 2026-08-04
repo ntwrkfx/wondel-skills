@@ -2,6 +2,10 @@
   "name": "product-innovation",
   "version": "1.5.1",
   "description": "Product innovation and validation frameworks including Lean Startup methodology, Google Ventures Design Sprint, and Don Norman's design principles",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "lean-startup",
@@ -15,7 +19,22 @@
     "product-discovery",
     "empowered-teams"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Product Innovation",
+    "shortDescription": "Validation, MVP design, prototyping, and continuous discovery",
+    "longDescription": "Apply product innovation frameworks to validate assumptions, design experiments, prototype critical flows, and organize continuous product discovery.",
+    "developerName": "Wondel.ai",
+    "category": "Productivity",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use product innovation to help with this task."
+    ]
+  }
 }
