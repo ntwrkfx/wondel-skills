@@ -2,6 +2,10 @@
   "name": "metaskills",
   "version": "1.5.1",
   "description": "Twelve guided journeys that orchestrate the whole skill library step by step — create, improve, and grow a business, website, or app, plus improve code quality, remove technical debt, and design code architecture. Each metaskill invokes the right skills phase by phase, asks the user questions at every decision point, and records results as living documents in the project docs/ folder",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "metaskills",
@@ -21,7 +25,22 @@
     "technical-debt",
     "architecture"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Guided Journeys",
+    "shortDescription": "Create, improve, or grow products and businesses through staged decisions",
+    "longDescription": "Run twelve guided journeys that sequence the appropriate Wondel skills, surface each decision, preserve journey state, and produce structured project artifacts in workspace or chat mode.",
+    "developerName": "Wondel.ai",
+    "category": "Productivity",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use a guided journey to help with this task."
+    ]
+  }
 }
