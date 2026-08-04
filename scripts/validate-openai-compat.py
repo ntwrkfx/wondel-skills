@@ -99,6 +99,11 @@ def validate_source_skills(source: dict) -> set[str]:
             fail(f"{slug}/SKILL.md lacks frontmatter name")
         if not description:
             fail(f"{slug}/SKILL.md lacks frontmatter description")
+        if not 1 <= len(description) <= 1024:
+            fail(
+                f"{slug}/SKILL.md frontmatter description must be 1-1024 characters; "
+                f"got {len(description)}"
+            )
         if name in frontmatter_names:
             fail(f"duplicate skill name {name!r}: {frontmatter_names[name]} and {slug}")
         frontmatter_names[name] = slug
