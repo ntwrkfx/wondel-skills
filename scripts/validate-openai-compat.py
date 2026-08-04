@@ -10,9 +10,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".claude-plugin" / "marketplace.json"
+OPENAI_METADATA = ROOT / "config" / "openai-plugin-metadata.json"
 GENERATED_MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 PLUGINS = ROOT / "plugins"
 EXPECTED_REPOSITORY = "https://github.com/ntwrkfx/wondel-skills"
+EXPECTED_HOMEPAGE = "https://skills.wondel.ai"
 
 METASKILLS = {
     "create-business",
@@ -40,11 +42,14 @@ def fail(message: str) -> None:
 
 def read_json(path: Path) -> dict:
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        value = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError:
         fail(f"missing required file: {path.relative_to(ROOT)}")
     except json.JSONDecodeError as exc:
         fail(f"invalid JSON in {path.relative_to(ROOT)}: {exc}")
+    if not isinstance(value, dict):
+        fail(f"expected a JSON object in {path.relative_to(ROOT)}")
+    return value
 
 
 def frontmatter_value(text: str, key: str) -> str:
@@ -121,7 +126,30 @@ def validate_metaskill_metadata() -> None:
                 fail(f"{path.relative_to(ROOT)} lacks required fragment: {fragment}")
 
 
-def validate_generated_plugins(source: dict) -> None:
+def validate_listing_metadata(source: dict, listing_metadata: dict) -> None:
+    source_names = {plugin["name"] for plugin in source.get("plugins", [])}
+    metadata_names = set(listing_metadata)
+    if source_names != metadata_names:
+        missing = sorted(source_names - metadata_names)
+        unknown = sorted(metadata_names - source_names)
+        fail(f"OpenAI listing metadata mismatch; missing={missing}, unknown={unknown}")
+
+    required = (
+        "displayName",
+        "shortDescription",
+        "longDescription",
+        "category",
+        "defaultPrompt",
+    )
+    for name, metadata in listing_metadata.items():
+        if not isinstance(metadata, dict):
+            fail(f"OpenAI listing metadata for {name} must be an object")
+        for field in required:
+            if not metadata.get(field):
+                fail(f"OpenAI listing metadata for {name} lacks {field}")
+
+
+def validate_generated_plugins(source: dict, listing_metadata: dict) -> None:
     generated = read_json(GENERATED_MARKETPLACE)
     source_names = [plugin["name"] for plugin in source["plugins"]]
     generated_names = [plugin["name"] for plugin in generated.get("plugins", [])]
@@ -148,11 +176,26 @@ def validate_generated_plugins(source: dict) -> None:
             fail(f"manifest name mismatch for {name}")
         if manifest["repository"] != EXPECTED_REPOSITORY:
             fail(f"stale repository URL in {manifest_path.relative_to(ROOT)}")
+        if manifest["homepage"] != EXPECTED_HOMEPAGE:
+            fail(f"stale homepage URL in {manifest_path.relative_to(ROOT)}")
 
         interface = manifest["interface"]
-        for field in ("displayName", "shortDescription", "longDescription", "developerName"):
-            if not interface.get(field):
-                fail(f"{manifest_path.relative_to(ROOT)} lacks interface.{field}")
+        expected = listing_metadata[name]
+        comparisons = {
+            "displayName": expected["displayName"],
+            "shortDescription": expected["shortDescription"],
+            "longDescription": expected["longDescription"],
+            "category": expected["category"],
+            "defaultPrompt": [expected["defaultPrompt"]],
+        }
+        for field, expected_value in comparisons.items():
+            if interface.get(field) != expected_value:
+                fail(
+                    f"{manifest_path.relative_to(ROOT)} has stale interface.{field}; "
+                    f"expected {expected_value!r}"
+                )
+        if interface.get("developerName") != "Wondel.ai":
+            fail(f"{manifest_path.relative_to(ROOT)} lacks the Wondel.ai developer identity")
 
         expected_skills = [path.removeprefix("./") for path in source_plugin["skills"]]
         skills_dir = PLUGINS / name / "skills"
@@ -168,9 +211,11 @@ def validate_generated_plugins(source: dict) -> None:
 def main() -> int:
     try:
         source = read_json(MARKETPLACE)
+        listing_metadata = read_json(OPENAI_METADATA)
         skills = validate_source_skills(source)
         validate_metaskill_metadata()
-        validate_generated_plugins(source)
+        validate_listing_metadata(source, listing_metadata)
+        validate_generated_plugins(source, listing_metadata)
     except ValidationError as exc:
         print(f"OpenAI compatibility validation failed: {exc}", file=sys.stderr)
         return 1
