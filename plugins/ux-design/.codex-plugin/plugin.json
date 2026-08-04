@@ -2,6 +2,10 @@
   "name": "ux-design",
   "version": "1.5.1",
   "description": "UX and UI design skills including Refactoring UI, iOS HIG design, usability heuristics, habit-forming product design, behavior design for retention, web typography, award-winning top-design, Steve Jobs-style design reviews, and Don Norman's foundational design principles",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "ux",
@@ -25,7 +29,22 @@
     "microinteractions",
     "usability-audit"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "UX Design",
+    "shortDescription": "UX audits, interface design, typography, retention, and interaction quality",
+    "longDescription": "Apply established UX and interface design frameworks to usability, visual hierarchy, typography, behavior design, retention, microinteractions, and design reviews.",
+    "developerName": "Wondel.ai",
+    "category": "Design",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use UX design to help with this task."
+    ]
+  }
 }
