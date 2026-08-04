@@ -63,12 +63,15 @@ def frontmatter_value(text: str, key: str) -> str:
 
 
 def listed_skills(source: dict) -> set[str]:
+    """Return unique source skills while allowing reuse across collections."""
     result: set[str] = set()
     for plugin in source.get("plugins", []):
+        seen_in_plugin: set[str] = set()
         for raw_path in plugin.get("skills", []):
             slug = raw_path.removeprefix("./")
-            if slug in result:
-                fail(f"skill appears in multiple marketplace collections: {slug}")
+            if slug in seen_in_plugin:
+                fail(f"skill is duplicated inside plugin {plugin.get('name')}: {slug}")
+            seen_in_plugin.add(slug)
             result.add(slug)
     return result
 
