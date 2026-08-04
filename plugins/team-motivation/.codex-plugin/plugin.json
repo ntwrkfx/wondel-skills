@@ -2,6 +2,10 @@
   "name": "team-motivation",
   "version": "1.5.1",
   "description": "Team motivation and management skills including Daniel Pink's Autonomy, Mastery, Purpose (AMP) principles and Andy Grove's High Output Management (leverage, one-on-ones, OKRs, task-relevant maturity)",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "motivation",
@@ -19,7 +23,22 @@
     "performance-review",
     "delegation"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Team Motivation",
+    "shortDescription": "Management leverage, one-on-ones, motivation, delegation, and OKRs",
+    "longDescription": "Apply practical management frameworks to team motivation, autonomy, mastery, purpose, managerial leverage, one-on-ones, delegation, and task-relevant maturity.",
+    "developerName": "Wondel.ai",
+    "category": "Productivity",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use team motivation to help with this task."
+    ]
+  }
 }
