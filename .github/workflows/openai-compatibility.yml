@@ -21,3 +21,6 @@ jobs:
 
       - name: Validate OpenAI compatibility
         run: python3 ./scripts/validate-openai-compat.py
+
+      - name: Verify generated plugin files are committed
+        run: git diff --exit-code -- .agents/plugins plugins
