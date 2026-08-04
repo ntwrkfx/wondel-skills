@@ -2,6 +2,10 @@
   "name": "sales-influence",
   "version": "1.5.1",
   "description": "Sales, persuasion, and messaging skills including Cialdini's influence psychology, Aaron Ross's outbound sales methodology, Heath Brothers' sticky messaging, and Alex Hormozi's offer creation",
+  "author": {
+    "name": "Wondel.ai",
+    "url": "https://wondel.ai"
+  },
   "license": "MIT",
   "keywords": [
     "sales",
@@ -17,7 +21,22 @@
     "objection-handling",
     "pricing"
   ],
-  "repository": "https://github.com/wondelai/skills",
-  "homepage": "https://github.com/wondelai/skills",
-  "skills": "./skills/"
+  "repository": "https://github.com/ntwrkfx/wondel-skills",
+  "homepage": "https://skills.wondel.ai",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Sales Influence",
+    "shortDescription": "Offers, outbound sales, persuasive messaging, and objection handling",
+    "longDescription": "Apply structured sales and influence frameworks to offer design, outbound systems, persuasive communication, sticky messaging, and objection handling.",
+    "developerName": "Wondel.ai",
+    "category": "Productivity",
+    "capabilities": [
+      "Structured analysis",
+      "Guided workflows"
+    ],
+    "websiteURL": "https://skills.wondel.ai",
+    "defaultPrompt": [
+      "Use sales influence to help with this task."
+    ]
+  }
 }
